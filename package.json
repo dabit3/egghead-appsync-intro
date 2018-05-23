@@ -5,6 +5,7 @@
   "dependencies": {
     "aws-appsync": "^1.0.20",
     "aws-appsync-react": "^1.0.11",
+    "graphql-tag": "^2.9.2",
     "react": "^16.3.2",
     "react-apollo": "^2.1.4",
     "react-dom": "^16.3.2",
