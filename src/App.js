@@ -76,7 +76,7 @@ export default compose(
       fetchPolicy: 'cache-and-network'
     },
     props: props => ({
-      todos: props.data.listTodos ? props.data.listTodos.items : []
+      todos: props.data.listTodos.items
     })
   }),
   graphql(mutation, {
