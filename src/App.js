@@ -31,9 +31,22 @@ const query = gql`
   }
 `
 
+const subscription = gql`
+  subscription onCreateTodo {
+    onCreateTodo {
+      id
+      name
+      completed
+    }
+  }
+`
+
 class App extends Component {
   state = {
     todo: ''
+  }
+  componentDidMount() {
+    this.props.subscribeToNewTodos()
   }
   addTodo = () => {
     if (this.state.todo === '') return
@@ -76,24 +89,26 @@ export default compose(
       fetchPolicy: 'cache-and-network'
     },
     props: props => ({
-      todos: props.data.listTodos ? props.data.listTodos.items : []
+      todos: props.data.listTodos ? props.data.listTodos.items : [],
+      subscribeToNewTodos: params => {
+        props.data.subscribeToMore({
+          document: subscription,
+          updateQuery: (prev, { subscriptionData: { data : { onCreateTodo } } }) => ({
+            ...prev,
+            listTodos: {
+              __typename: 'TodoConnection',
+              items: [onCreateTodo, ...prev.listTodos.items.filter(todo => todo.id !== onCreateTodo.id)]
+            }
+          })
+        })
+      }
     })
   }),
   graphql(mutation, {
     props: props => ({
       addTodo: todo => {
         props.mutate({
-          variables: todo,
-          optimisticResponse: {
-            __typename: 'Mutation',
-            createTodo: { ...todo,  __typename: 'Todo' }
-          },
-          update: (proxy, { data: { createTodo } }) => {
-            const data = proxy.readQuery({ query: query });
-            console.log('New data: ', data)
-            data.listTodos.items.unshift(createTodo);
-            proxy.writeQuery({ query: query, data });
-          }
+          variables: todo
         })
       }
     })
