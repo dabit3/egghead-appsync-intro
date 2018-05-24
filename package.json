@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "aws-appsync": "^1.0.20",
-    "aws-appsync-react": "^1.0.11",
+    "aws-appsync": "^1.0.21-bookkeeping.1",
+    "aws-appsync-react": "^1.0.12-bookkeeping.1",
     "graphql-tag": "^2.9.2",
     "react": "^16.3.2",
     "react-apollo": "^2.1.4",
     "react-dom": "^16.3.2",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "uuid": "^3.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

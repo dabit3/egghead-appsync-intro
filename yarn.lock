@@ -410,16 +410,16 @@ autoprefixer@^6.3.1:
     postcss "^5.2.16"
     postcss-value-parser "^3.2.3"
 
-aws-appsync-react@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/aws-appsync-react/-/aws-appsync-react-1.0.11.tgz#9110d0700ba88c86021457677265fff3003eebd3"
+aws-appsync-react@^1.0.12-bookkeeping.1:
+  version "1.0.12-bookkeeping.1"
+  resolved "https://registry.yarnpkg.com/aws-appsync-react/-/aws-appsync-react-1.0.12-bookkeeping.1.tgz#456f01ed6bf718aef04276052d97850002e14e8b"
   dependencies:
-    aws-appsync "^1.0.20"
+    aws-appsync "^1.0.21-bookkeeping.1"
     prop-types "^15.6.0"
 
-aws-appsync@^1.0.20:
-  version "1.0.20"
-  resolved "https://registry.yarnpkg.com/aws-appsync/-/aws-appsync-1.0.20.tgz#78fdb26cbe362e47f2c1b4704ee129d8aca34dba"
+aws-appsync@^1.0.21-bookkeeping.1:
+  version "1.0.21-bookkeeping.1"
+  resolved "https://registry.yarnpkg.com/aws-appsync/-/aws-appsync-1.0.21-bookkeeping.1.tgz#3a7bb6390025277cbffb54b45e1b4d08002c833a"
   dependencies:
     "@redux-offline/redux-offline" "^2.2.1"
     apollo-cache-inmemory "^1.0.0"
@@ -7096,7 +7096,7 @@ uuid@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
 
-uuid@^3.1.0:
+uuid@^3.1.0, uuid@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.2.1.tgz#12c528bb9d58d0b9265d9a2f6f0fe8be17ff1f14"
 
