@@ -90,7 +90,6 @@ export default compose(
           },
           update: (proxy, { data: { createTodo } }) => {
             const data = proxy.readQuery({ query: query });
-            console.log('New data: ', data)
             data.listTodos.items.unshift(createTodo);
             proxy.writeQuery({ query: query, data });
           }
