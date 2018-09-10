@@ -3,39 +3,41 @@ import logo from './logo.svg';
 import './App.css';
 import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
+import { buildSubscription } from 'aws-appsync'
+import { graphqlMutation } from 'aws-appsync-react'
 
 import uuidV4 from 'uuid/v4'
 
-const mutation = gql`
-  mutation createTodo($name: String!, $completed: Boolean!) {
+const CreateTodo = gql`
+  mutation createTodo($title: String!, $completed: Boolean) {
     createTodo(input: {
-      name: $name
+      title: $title
       completed: $completed
     }) {
-      name
+      title
       completed
       id
     }
   }
 `
 
-const query = gql`
+const ListTodos = gql`
   query listTodos {
     listTodos {
       items {
         id
-        name
+        title
         completed
       }
     }
   }
 `
 
-const subscription = gql`
+const SubscribeToTodos = gql`
   subscription onCreateTodo {
     onCreateTodo {
       id
-      name
+      title
       completed
     }
   }
@@ -46,7 +48,9 @@ class App extends Component {
     todo: ''
   }
   componentDidMount() {
-    this.props.subscribeToNewTodos()
+    this.props.data.subscribeToMore(
+      buildSubscription(SubscribeToTodos, ListTodos)
+    )
   }
   addTodo = () => {
     if (this.state.todo === '') return
@@ -55,7 +59,7 @@ class App extends Component {
       completed: false,
       id: uuidV4()
     }
-    this.props.addTodo(todo)
+    this.props.createTodo(todo)
     this.setState({ todo: '' })
   }
   render() {
@@ -75,42 +79,23 @@ class App extends Component {
         </button>
         {
           this.props.todos.map((todo, index) => (
-            <p key={index}>{todo.name}</p>
+            <p key={index}>{todo.title}</p>
           ))
         }
       </div> 
-    );
+    )
   }
 }
 
 export default compose(
-  graphql(query, {
+  graphql(ListTodos, {
     options: {
       fetchPolicy: 'cache-and-network'
     },
     props: props => ({
       todos: props.data.listTodos ? props.data.listTodos.items : [],
-      subscribeToNewTodos: params => {
-        props.data.subscribeToMore({
-          document: subscription,
-          updateQuery: (prev, { subscriptionData: { data : { onCreateTodo } } }) => ({
-            ...prev,
-            listTodos: {
-              __typename: 'TodoConnection',
-              items: [onCreateTodo, ...prev.listTodos.items.filter(todo => todo.id !== onCreateTodo.id)]
-            }
-          })
-        })
-      }
+      data: props.data
     })
   }),
-  graphql(mutation, {
-    props: props => ({
-      addTodo: todo => {
-        props.mutate({
-          variables: todo
-        })
-      }
-    })
-  })
+  graphqlMutation(CreateTodo, ListTodos, 'Todo'),
 )(App)
