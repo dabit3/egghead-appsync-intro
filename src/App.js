@@ -9,7 +9,7 @@ const query = gql`
     listTodos {
       items {
         id
-        name
+        title
         completed
       }
     }
