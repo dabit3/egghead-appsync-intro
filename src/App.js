@@ -25,6 +25,11 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
+        {
+          this.props.todos.map((todo, index) => (
+            <p>{todo.title}</p>
+          ))
+        }
       </div> 
     );
   }
@@ -33,5 +38,8 @@ class App extends Component {
 export default graphql(query, {
   options: {
     fetchPolicy: 'cache-and-network'
-  }
+  },
+  props: props => ({
+    todos: props.data.listTodos ? props.data.listTodos.items : []
+  })
 })(App)
