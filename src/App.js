@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import gql from 'graphql-tag'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
+import { graphqlMutation } from 'aws-appsync-react'
 
 const createTodo = gql`
-  mutation createTodo($name: String!, $completed: Boolean!) {
+  mutation createTodo($title: String!, $completed: Boolean!) {
     createTodo(input: {
-      name: $name
+      title: $name
       completed: $completed
     }) {
-      id
+      id title completed
     }
   }
 `
@@ -20,7 +21,7 @@ class App extends Component {
   addTodo = () => {
     if (this.state.todo === '') return
     const todo = {
-      name: this.state.todo,
+      title: this.state.todo,
       completed: false
     }
     this.props.addTodo(todo)
@@ -45,10 +46,13 @@ class App extends Component {
   }
 }
 
-export default graphql(createTodo, {
-  props: props => ({
-    addTodo: todo => {
-      props.mutate({ variables: todo })
-    }
+export default compose(
+  graphqlMutation(CreatePost, query, 'Todo'),
+  graphql(createTodo, {
+    props: props => ({
+     graphqlMutation(CreatePost, listPosts, 'Post') addTodo: todo => {
+        props.mutate({ variables: todo })
+      }
+    })
   })
-})(App)
+)(App)
