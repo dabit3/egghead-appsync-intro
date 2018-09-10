@@ -4,7 +4,7 @@ import './App.css';
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 
-const query = gql`
+const ListTodos = gql`
   query listTodos {
     listTodos {
       items {
@@ -18,7 +18,6 @@ const query = gql`
 
 class App extends Component {
   render() {
-    console.log('props: ', this.props)
     return (
       <div className="App">
         <header className="App-header">
@@ -35,7 +34,7 @@ class App extends Component {
   }
 }
 
-export default graphql(query, {
+export default graphql(ListTodos, {
   options: {
     fetchPolicy: 'cache-and-network'
   },
