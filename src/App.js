@@ -55,9 +55,8 @@ class App extends Component {
   addTodo = () => {
     if (this.state.todo === '') return
     const todo = {
-      name: this.state.todo,
-      completed: false,
-      id: uuidV4()
+      title: this.state.todo,
+      completed: false
     }
     this.props.createTodo(todo)
     this.setState({ todo: '' })
